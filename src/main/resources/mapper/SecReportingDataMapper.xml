@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.buba.mapper.SecReportingDataMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.buba.pojo.SecReportingData">
+        <id column="id" property="id" />
+        <result column="actualTableCount" property="actualTableCount" />
+        <result column="newCustomers" property="newCustomers" />
+        <result column="oldCustomers" property="oldCustomers" />
+        <result column="intentionalCustomers" property="intentionalCustomers" />
+        <result column="premium" property="premium" />
+        <result column="activityTime" property="activityTime" />
+        <result column="forecast_id" property="forecastId" />
+        <result column="planNumberTables" property="planNumberTables" />
+        <result column="name" property="name" />
+        <result column="planName" property="planName" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, actualTableCount, newCustomers, oldCustomers, intentionalCustomers, premium, activityTime, forecast_id
+    </sql>
+
+    <select id="getsecReportingDataTable" resultMap="BaseResultMap">
+
+        SELECT a.*,b.planNumberTables,b.planName,r.name FROM sec_reporting_data a LEFT join  sec_forecast_data b on  a.forecast_id=b.id LEFT join sec_user u on b.userId=u.id LEFT join sec_address r on u.ressid=r.id
+        <where>
+            <if test="user.userLevel==2">
+                r.id in(SELECT s2.id FROM sec_address s1 LEFT join sec_address s2 on s1.id=s2.pid LEFT JOIN sec_user u on u.ressid=s1.id WHERE s1.id=#{user.ressid}  and u.id=#{user.id} or s2.id=#{user.ressid})
+            </if>
+            <if test="user.userLevel==3">
+                r.id=#{user.ressid}
+            </if>
+        </where>
+
+    </select>
+    <select id="getsecReportingDataTableEchartsline" resultMap="BaseResultMap">
+        SELECT a.*,b.planNumberTables,b.planName,r.name FROM sec_reporting_data a LEFT join  sec_forecast_data b on  a.forecast_id=b.id LEFT join sec_user u on b.userId=u.id LEFT join sec_address r on u.ressid=r.id
+        <where>
+            <if test="user.userLevel==2">
+                r.id in(SELECT s2.id FROM sec_address s1 LEFT join sec_address s2 on s1.id=s2.pid  WHERE s1.id=#{user.ressid} or s2.id=#{user.ressid} )
+            </if>
+            <if test="user.userLevel==3">
+                r.id=#{user.ressid}
+            </if>
+        </where>
+    </select>
+
+
+</mapper>

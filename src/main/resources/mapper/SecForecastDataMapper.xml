@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.buba.mapper.SecForecastDataMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.buba.pojo.SecForecastData">
+        <id column="id" property="id" />
+        <result column="entryTime" property="entryTime" />
+        <result column="planName" property="planName" />
+        <result column="planNumberTables" property="planNumberTables" />
+        <result column="startTime" property="startTime" />
+        <result column="endTime" property="endTime" />
+        <result column="status" property="status" />
+        <result column="user_id" property="userId" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, entryTime, planName, planNumberTables, startTime, endTime, status, user_id
+    </sql>
+
+</mapper>
